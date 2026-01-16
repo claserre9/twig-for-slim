@@ -107,15 +107,36 @@ twig-for-slim/
 
 ### Scripts
 
-Currently, there are no custom scripts defined in `composer.json`.
+You can run the following commands for development:
 
-### Environment Variables
+```bash
+# Run tests
+composer test
 
-No specific environment variables are required by this library. Configuration is handled through the `Twig::create()` method.
+# Run static analysis
+composer analyze
+
+# Check coding standards
+composer check-style
+
+# Fix coding standards
+composer fix-style
+```
+
+### Continuous Integration
+
+This project uses GitHub Actions for CI. See `.github/workflows/ci.yml` for details.
+
+To automatically update the package on Packagist when you push to GitHub, a workflow is provided in `.github/workflows/packagist.yml`. You need to add the following secrets to your GitHub repository:
+
+- `PACKAGIST_USERNAME`: Your Packagist username.
+- `PACKAGIST_TOKEN`: Your Packagist API token (found in your Packagist profile).
+
+Alternatively, you can set up a GitHub Webhook manually on Packagist.
 
 ### Tests
 
-- TODO: Add unit tests for `TwigMiddleware` and `TwigExtension`.
+Tests are located in the `tests/` directory and can be run with `composer test`.
 
 ### License
 

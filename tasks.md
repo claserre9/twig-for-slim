@@ -14,7 +14,7 @@
 - [x] Add a `base_path()` Twig function to get the Slim app's base path.
 
 ## Documentation
-- [ ] Expand `README.md` with usage examples for `TwigMiddleware`.
+- [x] Expand `README.md` with usage examples and scripts documentation.
 - [ ] Add documentation for all available Twig functions (`url_for`, `full_url_for`, etc.).
 - [ ] Create a `CONTRIBUTING.md` file.
 
@@ -23,3 +23,4 @@
 - [x] Add a `.editorconfig` file.
 - [x] Ensure `composer.json` has complete metadata (keywords, homepage, etc.).
 - [x] Add composer scripts for common tasks (test, analyze).
+- [x] Set up GitHub workflow for Packagist auto-updates.
