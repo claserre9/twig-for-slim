@@ -1,0 +1,41 @@
+{
+    "name": "claserre9/twig-for-slim",
+    "description": "Twig template for slim microframework",
+    "keywords": ["slim", "twig", "template", "middleware"],
+    "homepage": "https://github.com/claserre9/twig-for-slim",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Claserre9\\TwigForSlim\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Claserre9\\TwigForSlim\\Tests\\": "tests/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Clifford Laserre",
+            "email": "clifford.l@valnetinc.com"
+        }
+    ],
+    "require": {
+      "php": "^7.4 || ^8.0",
+      "slim/slim": "^4.0",
+      "twig/twig": "^3.0",
+      "guzzlehttp/psr7": "^2.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.6",
+        "phpstan/phpstan": "^2.1",
+        "squizlabs/php_codesniffer": "^4.0"
+    },
+    "scripts": {
+        "test": "./vendor/bin/phpunit --testdox",
+        "analyze": "vendor/bin/phpstan analyse src",
+        "check-style": "vendor/bin/phpcs src --standard=PSR12",
+        "fix-style": "vendor/bin/phpcbf src"
+    }
+}

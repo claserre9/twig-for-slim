@@ -1,0 +1,14 @@
+<h1>Test URLs</h1>
+<ul>
+    <li>path('home'): {{ path('home') }}</li>
+    <li>path('hello', {name: 'world'}): {{ path('hello', {name: 'world'}) }}</li>
+    <li>path('home', {}, true): {{ path('home', {}, true) }}</li>
+    <li>url('home'): {{ url('home') }}</li>
+    <li>url('home', {}, true): {{ url('home', {}, true) }}</li>
+    <li>relative_path('/some/absolute/path'): {{ relative_path('/some/absolute/path') }}</li>
+</ul>
+<p>Old functions still work:</p>
+<ul>
+    <li>url_for('home'): {{ url_for('home') }}</li>
+    <li>full_url_for('home'): {{ full_url_for('home') }}</li>
+</ul>
