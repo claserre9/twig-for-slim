@@ -38,10 +38,12 @@ use Claserre9\TwigForSlim\middlewares\TwigMiddleware;
 
 require __DIR__ . '/vendor/autoload.php';
 
-// Initialize Twig with the path to your templates
-$twig = Twig::create(__DIR__ . '/templates');
-
 $app = AppFactory::create();
+
+// Create Twig instance
+$twig = Twig::create(__DIR__ . '/templates', [
+    'cache' => __DIR__ . '/cache',
+]);
 
 // Add Slim's Routing Middleware (required for url_for and other route helpers)
 $app->addRoutingMiddleware();
@@ -65,7 +67,29 @@ $app->get('/hello/{name}', function ($request, $response, $args) {
 $app->run();
 ```
 
-#### 2. Create a Template (`templates/hello.twig`)
+#### 2. Usage with DI Container (Recommended)
+
+If you use a DI container (like PHP-DI), you can register `Twig` as a service.
+
+```php
+use Psr\Container\ContainerInterface;
+use Claserre9\TwigForSlim\Twig;
+use Claserre9\TwigForSlim\middlewares\TwigMiddleware;
+use Slim\Factory\AppFactory;
+
+// ... container setup ...
+$container->set(Twig::class, function () {
+    return Twig::create(__DIR__ . '/templates');
+});
+
+AppFactory::setContainer($container);
+$app = AppFactory::create();
+
+// The middleware will automatically fetch Twig from the container
+$app->add(TwigMiddleware::create($app, Twig::class));
+```
+
+#### 3. Create a Template (`templates/hello.twig`)
 
 ```twig
 <!DOCTYPE html>
@@ -84,11 +108,45 @@ $app->run();
 
 The following functions are available within your Twig templates thanks to `TwigExtension`:
 
-- `url_for(routeName, data, queryParams)`: Generates a URL for a named route.
-- `full_url_for(routeName, data, queryParams)`: Generates a fully qualified URL for a named route.
-- `path(routeName, data, relative)`: Alias for generating route paths.
-- `url(routeName, data, schemeRelative)`: Generates a URL, optionally scheme-relative.
-- `relative_path(path)`: Calculates a relative path based on the current URI.
+| Function | Description | Example |
+| --- | --- | --- |
+| `url_for(name, data, params)` | Generates a URL for a named route. | `{{ url_for('hello', {'name': 'world'}) }}` |
+| `full_url_for(name, data, params)` | Generates a fully qualified URL for a named route. | `{{ full_url_for('hello', {'name': 'world'}) }}` |
+| `path(name, data, relative)` | Alias for `url_for`. If `relative` is true, it returns a relative path. | `{{ path('home') }}` |
+| `url(name, data, schemeRelative)` | Generates a URL for a named route. | `{{ url('home') }}` |
+| `relative_path(path)` | Returns a relative path from the current URI to the given path. | `{{ relative_path('/assets/css/style.css') }}` |
+| `base_path()` | Returns the base path of the Slim application. | `{{ base_path() }}` |
+
+### Advanced Usage
+
+#### Custom Filters and Functions
+
+You can add custom filters or functions directly to the `TwigExtension` via the `Twig` instance:
+
+```php
+use Claserre9\TwigForSlim\TwigExtension;
+use Twig\TwigFilter;
+use Twig\TwigFunction;
+
+$twig = Twig::create(__DIR__ . '/templates');
+
+// ... after middleware is added and extension is initialized (usually in route or another middleware)
+// OR manually get the extension from environment:
+$environment = $twig->getEnvironment();
+$extension = $environment->getExtension(TwigExtension::class);
+
+$extension->addFunction(new TwigFunction('my_func', function() { ... }));
+$extension->addFilter(new TwigFilter('my_filter', function($val) { ... }));
+```
+
+#### Runtime Loaders
+
+If you have complex dependencies for your Twig extensions, you can use Runtime Loaders:
+
+```php
+$twig = Twig::create(__DIR__ . '/templates');
+$twig->addRuntimeLoader(new MyCustomRuntimeLoader());
+```
 
 ### Project Structure
 
@@ -122,17 +180,6 @@ composer check-style
 # Fix coding standards
 composer fix-style
 ```
-
-### Continuous Integration
-
-This project uses GitHub Actions for CI. See `.github/workflows/ci.yml` for details.
-
-To automatically update the package on Packagist when you push to GitHub, a workflow is provided in `.github/workflows/packagist.yml`. You need to add the following secrets to your GitHub repository:
-
-- `PACKAGIST_USERNAME`: Your Packagist username.
-- `PACKAGIST_TOKEN`: Your Packagist API token (found in your Packagist profile).
-
-Alternatively, you can set up a GitHub Webhook manually on Packagist.
 
 ### Tests
 

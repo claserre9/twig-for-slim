@@ -15,7 +15,7 @@
 
 ## Documentation
 - [x] Expand `README.md` with usage examples and scripts documentation.
-- [ ] Add documentation for all available Twig functions (`url_for`, `full_url_for`, etc.).
+- [x] Add documentation for all available Twig functions (`url_for`, `full_url_for`, etc.).
 - [ ] Create a `CONTRIBUTING.md` file.
 
 ## Infrastructure
